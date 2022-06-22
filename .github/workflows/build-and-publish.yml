@@ -1,0 +1,72 @@
+name: Build and Publish
+
+on:
+  release:
+    types: [published, unpublished]
+    branches:
+      - main
+
+jobs:
+  set-commit-hash:
+    name: A commit hash of the latest release
+    runs-on: ubuntu-latest
+    outputs:
+      commit_hash: ${{ steps.commit-hash.outputs.commit_hash }}
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout the repo
+      - id: commit-hash
+        name: Grab the commit hash
+        uses: ottofeller/github-actions/latest-release-commit-hash@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  lint:
+    name: Lint code with gofmt
+    needs: [set-commit-hash]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.ref }}
+      - uses: Jerome1337/gofmt-action@v1.0.4
+        with:
+          gofmt-path: "./sdk/go"
+          gofmt-flags: "-l -d"
+
+  test:
+    name: Run unit tests
+    needs: [set-commit-hash]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-go@v3
+      - name: Run tests
+        run: go test -v ./...
+
+  build-binaries:
+    name: Build Go Binaries
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    strategy:
+      matrix:
+        # build and publish in parallel: linux/amd64, linux/arm64, windows/amd64, darwin/amd64, darwin/arm64
+        goos: [linux, windows, darwin]
+        goarch: [amd64, arm64]
+        exclude:
+          - goarch: arm64
+            goos: windows
+    steps:
+      - uses: actions/checkout@v3
+      - uses: wangyoucao577/go-release-action@v1.28
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          goversion: "https://go.dev/dl/go1.18.2.linux-amd64.tar.gz"
+          binary_name: "zero-sdk"
+          extra_files: LICENSE README.md
