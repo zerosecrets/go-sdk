@@ -1,4 +1,4 @@
-module github.com/ottofeller/zero/sdk/go
+module github.com/zerosecrets/zero/sdk/go
 
 go 1.18
 
