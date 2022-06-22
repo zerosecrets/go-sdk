@@ -1,4 +1,4 @@
-module github.com/zerosecrets/zero
+module github.com/zerosecrets/go-sdk
 
 go 1.18
 
