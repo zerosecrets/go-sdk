@@ -5,7 +5,7 @@ Go SDK for [Zero](https://tryzero.com). Provides a clear and simple interface fo
 
 ## Installation
 ```bash
-go get github.com/zerosecrets/go-sdk`
+go get github.com/zerosecrets/go-sdk
 ```
 
 ## Usage
