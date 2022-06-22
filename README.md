@@ -4,7 +4,7 @@
 Go SDK for [Zero](https://tryzero.com). Provides a clear and simple interface for the secrets manager GraphQL API.
 
 ## Installation
-go get github.com/zerosecrets/go-sdk
+`go get github.com/zerosecrets/go-sdk`
 
 ## Usage
 Fetch secrets for AWS by passing your `zero` token
