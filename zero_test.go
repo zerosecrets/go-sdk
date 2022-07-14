@@ -22,7 +22,7 @@ func TestZero(t *testing.T) {
 				return httpmock.NewStringResponse(400, ""), nil
 			}
 
-			if body["variables"].(map[string]interface{})["apis"] == "" {
+			if body["variables"].(map[string]interface{})["pick"] == "" {
 				return httpmock.NewStringResponse(200, "Failed to fetch"), nil
 			}
 
