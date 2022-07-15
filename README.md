@@ -1,6 +1,4 @@
 # Zero Go SDK
-
-## Short intro.
 Go SDK for [Zero](https://tryzero.com). Provides a clear and simple interface for the secrets manager GraphQL API.
 
 ## Installation
