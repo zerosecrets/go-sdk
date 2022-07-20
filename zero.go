@@ -75,6 +75,10 @@ func (params ZeroApi) Fetch() (map[string]map[string]string, error) {
 		return make(map[string]map[string]string), err
 	}
 
+	if graphqlResponseBody.Errors != nil {
+		return nil, errors.New(graphqlResponseBody.Errors[0].Message)
+	}
+
 	secrets := make(map[string]map[string]string)
 
 	for _, secret := range graphqlResponseBody.Data.Secrets {
@@ -106,6 +110,10 @@ type GraphqlResponseBody struct {
 			} `json:"fields"`
 		} `json:"secrets"`
 	} `json:"data"`
+
+	Errors []struct {
+		Message string `json:"message"`
+	} `json:"errors"`
 }
 
 func Zero(token string, pick []string) (*ZeroApi, error) {

@@ -23,7 +23,21 @@ func TestZero(t *testing.T) {
 			}
 
 			if body["variables"].(map[string]interface{})["pick"] == "" {
-				return httpmock.NewStringResponse(200, "Failed to fetch"), nil
+				return httpmock.NewStringResponse(200, `
+					"data": null,
+
+					"errors": [
+						{
+							"message": "Could not establish connection with database",
+							"locations": [{"line": 2, "column": 2}],
+							"path": ["secrets"],
+							"extensions": {
+								"internal_error":
+									"Error occurred while creating a new object: error connecting to server: Connection refused (os error 61)",
+							},
+						},
+					],
+				`), nil
 			}
 
 			return httpmock.NewStringResponse(200, rawMock), nil
