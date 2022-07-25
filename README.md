@@ -20,7 +20,7 @@ import (
 )
 
 func main() {
-	api, err := zero.Zero(os.Getenv("ZERO_TOKEN"), []string{"aws"})
+	api, err := zero.Zero(os.Getenv("ZERO_TOKEN"), []string{"aws"}, nil)
 
 	if err != nil {
 		panic(err)

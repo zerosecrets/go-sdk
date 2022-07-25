@@ -45,7 +45,7 @@ func TestZero(t *testing.T) {
 	)
 
 	t.Run("requires token to be non-empty string", func(t *testing.T) {
-		_, err := Zero("", []string{"aws", "azure"})
+		_, err := Zero("", []string{"aws", "azure"}, nil)
 
 		if err == nil {
 			t.Error("Expected error, got nil")
@@ -53,7 +53,7 @@ func TestZero(t *testing.T) {
 	})
 
 	t.Run("does a GraphQL request which queries the requested APIs", func(t *testing.T) {
-		zeroApi, err := Zero("token", []string{"aws"})
+		zeroApi, err := Zero("token", []string{"aws"}, nil)
 
 		if err != nil {
 			t.Error(err)
@@ -71,7 +71,7 @@ func TestZero(t *testing.T) {
 	})
 
 	t.Run("returns an error if GraphQL API responds with error", func(t *testing.T) {
-		api, err := Zero("token", []string{})
+		api, err := Zero("token", []string{}, nil)
 
 		if err != nil {
 			t.Error(err)
