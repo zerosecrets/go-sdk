@@ -23,8 +23,8 @@ type ZeroApi struct {
 
 func (params ZeroApi) Fetch() (map[string]map[string]string, error) {
 	query := `
-    query Secrets($token: String!, $pick: [String!], $caller_name: String) {
-      secrets(zeroToken: $token, pick: $pick) {
+    query Secrets($token: String!, $pick: [String!], $callerName: String) {
+      secrets(zeroToken: $token, pick: $pick, callerName: $callerName) {
         name
 
         fields {
@@ -40,7 +40,7 @@ func (params ZeroApi) Fetch() (map[string]map[string]string, error) {
 	}
 
 	if params.caller_name != nil {
-		variables["caller_name"] = *params.caller_name
+		variables["callerName"] = *params.caller_name
 	}
 
 	graphqlBody := GraphqlRequestBody{
