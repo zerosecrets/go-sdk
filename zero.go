@@ -16,13 +16,14 @@ type Fetch interface {
 }
 
 type ZeroApi struct {
-	token string
-	pick  []string
+	token       string
+	pick        []string
+	caller_name *string
 }
 
 func (params ZeroApi) Fetch() (map[string]map[string]string, error) {
 	query := `
-    query Secrets($token: String!, $pick: [String!]) {
+    query Secrets($token: String!, $pick: [String!], $caller_name: String) {
       secrets(zeroToken: $token, pick: $pick) {
         name
 
@@ -33,10 +34,13 @@ func (params ZeroApi) Fetch() (map[string]map[string]string, error) {
       }
     }
   `
-
 	variables := map[string]string{
 		"token": params.token,
 		"pick":  strings.Join(params.pick, ","),
+	}
+
+	if params.caller_name != nil {
+		variables["caller_name"] = *params.caller_name
 	}
 
 	graphqlBody := GraphqlRequestBody{
@@ -108,13 +112,14 @@ type GraphqlResponseBody struct {
 	} `json:"data"`
 }
 
-func Zero(token string, pick []string) (*ZeroApi, error) {
+func Zero(token string, pick []string, caller_name *string) (*ZeroApi, error) {
 	if len(token) == 0 {
 		return &ZeroApi{}, errors.New("Zero token should be non-empty string")
 	}
 
 	return &ZeroApi{
-		token: token,
-		pick:  pick,
+		token:       token,
+		pick:        pick,
+		caller_name: caller_name,
 	}, nil
 }
