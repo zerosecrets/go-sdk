@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const GRAPHQL_ENDPOINT_URL = "https://core.tryzero.com/v1/graphql"
+const GRAPHQL_ENDPOINT_URL = "https://core.tryzero.com/graphql"
 
 type Fetch interface {
 	Fetch() (map[string]map[string]string, error)
